@@ -70,8 +70,8 @@ record_type sensor_data[table_size+1]; // Define the data array
 
 void setup() {
   Serial.begin(115200);
-  //SPIFFS.remove("/"+DataFile); // In case file in ESP32 version gets corrupted, it happens a lot!!
   StartSPIFFS();
+  SPIFFS.remove("/"+DataFile); // In case file in ESP32 version gets corrupted, it happens a lot!!
   StartWiFi(ssid,password);
   StartTime();
   Serial.println(F("WiFi connected.."));
@@ -113,14 +113,9 @@ void setup() {
 
 void loop() {
   server.handleClient();
-  
-  // Data capture from the sensors, modify to admit Current and Voltage sensor.
-
   sht30.get(); // Update temp and humi
   temp = sht30.cTemp*10;
   humi = sht30.humidity*10;
-
-
   time_t now = time(nullptr); 
   time_now = String(ctime(&now)).substring(0,24); // Remove unwanted characters
   if (time_now != "Thu Jan 01 00:00:00 1970" and timer_cnt >= log_interval) { // If time is not yet set, returns 'Thu Jan 01 00:00:00 1970') so wait. 
@@ -513,14 +508,14 @@ void append_page_header() {
   webpage  = "<!DOCTYPE html><head>";
   if (AUpdate) webpage += F("<meta http-equiv='refresh' content='30'>"); // 30-sec refresh time, test needed to prevent auto updates repeating some commands
   webpage += F("<title>Logger</title>");
-  webpage += F("<style>ul{list-style-type:none;margin:0;padding:0;overflow:hidden;background-color:#F7F2Fd;font-size:14px;}"); //Sub-menu
+  webpage += F("<style>ul{list-style-type:none;margin:0;padding:0;overflow:hidden;background-color:#31c1f9;font-size:14px;}");
   webpage += F("li{float:left;}");
   webpage += F("li a{display:block;text-align:center;padding:5px 25px;text-decoration:none;}");
   webpage += F("li a:hover{background-color:#FFFFFF;}");
-  webpage += F("h1{background-color:#002AC4;}");
+  webpage += F("h1{background-color:#31c1f9;}");
   webpage += F("body{width:");
   webpage += site_width;
-  webpage += F("px;margin:0 auto;font-family:arial;font-size:14px;text-align:center;color:#ed6495;background-color:#F7F2Fd;}"); //Header-Title
+  webpage += F("px;margin:0 auto;font-family:arial;font-size:14px;text-align:center;color:#ed6495;background-color:#F7F2Fd;}");
   webpage += F("</style></head><body><h1>Data Logger ");
   webpage += version + "</h1>";
 }
