@@ -640,6 +640,7 @@ int StartWiFi(const char* ssid, const char* password) {
   int connAttempts = 0;
   Serial.print(F("\r\nConnecting to: ")); Serial.println(String(ssid));
   WiFi.begin(ssid, password);
+  WiFi.mode (WIFI_STA); //Borrar si sigue dando Empty Response
   while (WiFi.status() != WL_CONNECTED ) {
     delay(500); Serial.print(".");
     if (connAttempts > 20) {
